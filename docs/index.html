@@ -7,6 +7,7 @@
     <script src='leaflet.js'></script>
     <script src="leaflet-side-by-side.js"></script>
 	<script src="incendio.js"></script>
+	<script src="habitat.js"></script>
 	<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js'></script>
 	<link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css' rel='stylesheet' />
     <link href='leaflet.css' rel='stylesheet' />
@@ -38,26 +39,142 @@
 	}).setView([41.945,15.065], 15);
 	
 	// define a style
-	var mystyle = {
-		opacity: 1,
-		color: 'blue',
-		//dashArray: '2,2',
-		lineJoin: 'round',
-		lineCap: 'butt',
-		fillColor: '#FF5A5F',
-		weight: 2,
-		fill: true,
-		fillOpacity: 0.0
+	// create a function with if statement to creare categories
+function my_style(feature) {
+	if (feature.properties['HABITAT'] === "1210-2110") {
+		return {
+			opacity: 1,
+			color: '#f4f4be',
+			weight: 0.0,
+			fill: true,
+			fillOpacity: 0.7,
+			fillColor: '#f4f4be',
+		}
 	};
+	if (feature.properties['HABITAT'] === "1310-1410-1420-1430-1510*-3170*-6420") {
+		return {
+			opacity: 1,
+			color: '#6dceac',
+			weight: 0.0,
+			fill: true,
+			fillOpacity: 0.7,
+			fillColor: '#6dceac',
+		}
+	};
+	if (feature.properties['HABITAT'] === "2120") {
+		return {
+			opacity: 1,
+			color: '#d6ff3a',
+			weight: 0.0,
+			fill: true,
+			fillOpacity: 0.7,
+			fillColor: '#d6ff3a',
+		}
+	};
+	if (feature.properties['HABITAT'] === "1310-1410-1510*-3170*") {
+		return {
+			opacity: 1,
+			color: '#6dceac',
+			weight: 0.0,
+			fill: true,
+			fillOpacity: 0.7,
+			fillColor: '#6dceac',
+		}
+	};
+	if (feature.properties['HABITAT'] === "91M0") {
+		return {
+			opacity: 1,
+			color: '#e31a1c',
+			weight: 0.0,
+			fill: true,
+			fillOpacity: 0.7,
+			fillColor: '#e31a1c'
+		}
+	};
+	if (feature.properties['HABITAT'] === "2250*") {
+		return {
+			opacity: 1,
+			color: '#837326',
+			weight: 0.0,
+			fill: true,
+			fillOpacity: 0.7,
+			fillColor: '#837326'
+		}
+	};
+if (feature.properties['HABITAT'] === "2270-1410") {
+		return {
+			opacity: 1,
+			color: '#267300',
+			weight: 0.0,
+			fill: true,
+			fillOpacity: 0.7,
+			fillColor: '#267300'
+		}
+	};
+if (feature.properties['HABITAT'] === "9340") {
+		return {
+			opacity: 1,
+			color: '#bc4b51',
+			weight: 0.0,
+			fill: true,
+			fillOpacity: 0.7,
+			fillColor: '#f6687d'
+		}
+	};
+if (feature.properties['HABITAT'] === "2270-1410-6420") {
+		return {
+			opacity: 1,
+			color: '#267300',
+			weight: 0.0,
+			fill: true,
+			fillOpacity: 0.7,
+			fillColor: '#267300'
+		}
+	};
+if (feature.properties['HABITAT'] === "2230-2240-2260") {
+		return {
+			opacity: 1,
+			color: '#fb9a99',
+			weight: 0.0,
+			fill: true,
+			fillOpacity: 0.7,
+			fillColor: '#fb9a99'
+		}
+	};
+if (feature.properties['HABITAT'] === "92A0") {
+		return {
+			opacity: 1,
+			color: '#68d9f6',
+			weight: 0.0,
+			fill: true,
+			fillOpacity: 0.7,
+			fillColor: '#68d9f6'
+		}
+	};
+if (feature.properties['HABITAT'] === "1130") {
+		return {
+			opacity: 1,
+			color: '#a6cee3',
+			weight: 0.0,
+			fill: true,
+			fillOpacity: 0.7,
+			fillColor: '#a6cee3'
+		}
+	};
+};
 
-	var limite_incendio = new L.geoJson(incendio, {
-		style: mystyle,
-		//onEachFeature: function (feature, layer) {
-		//layer.bindPopup('<table><tbody><tr><th scope="row"><td>Nome: '+feature.properties.DEN_REG+'</td></th></tr></tbody><tr><th scope="row"></th></tr></tbody>')}
+var limite_incendio = new L.geoJson(incendio, {
 		}).addTo(map);
 		
+var habitat = new L.geoJson(habitat, {
+		style: my_style,
+		onEachFeature: function (feature, layer) {
+		layer.bindPopup('<table><tbody><tr><th scope="row"><td><b>Codice habitat:</b> '+feature.properties.HABITAT+'</td></th></tr><tr><th scope="row"><td><b>Descrizione:</b> '+feature.properties.descrizion+'</td></th></tr></tbody><tr><th scope="row"></th></tr></tbody>')}
+		});
+		
 	var overlayMaps = {
-    "Limite incendio": limite_incendio
+    "Limite incendio": limite_incendio,
+	"Habitat Natura 2000": habitat
 	};
 	
 	var false_color_pre = L.tileLayer('false_color_pre/{z}/{x}/{y}.png', {
